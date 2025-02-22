@@ -8,9 +8,9 @@ export async function GET() {
   return NextResponse.json(projects);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextResponse) {
   const data = await request.json();
-  const projects = await prisma.project.create({
+  const project = await prisma.project.create({
     data: {
       title: data.title,
       description: data.description,
@@ -20,5 +20,5 @@ export async function POST(request: Request) {
       isActive: true,
     },
   });
-  return NextResponse.json(projects);
+  return NextResponse.json(project);
 }
