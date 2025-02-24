@@ -44,7 +44,7 @@ export default function ProjectForm({
     e.preventDefault();
 
     try {
-      const url = project ? `api/projects/${project.id}` : "/api/projects";
+      const url = project ? `/api/projects/${project.id}` : "/api/projects";
       const method = project ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -64,7 +64,7 @@ export default function ProjectForm({
       if (response.ok) {
         toast.success(
           project
-            ? "Projeto atualizodo com sucesso!"
+            ? "Projeto atualizado com sucesso!"
             : "Projeto criado com sucesso!"
         );
         setTitle("");

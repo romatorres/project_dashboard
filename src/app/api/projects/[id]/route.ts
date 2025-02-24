@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = await params.id;
+    const id = params.id;
     const data = await request.json();
 
     const project = await prisma.project.update({
