@@ -56,7 +56,7 @@ export default function ServiceForm({
           title,
           description,
           icon,
-          imageUrl, // Add imageUrl to the request body
+          imageUrl,
           order,
         }),
       });
@@ -64,8 +64,8 @@ export default function ServiceForm({
       if (response.ok) {
         toast.success(
           service
-            ? "Service updated successfully!"
-            : "Service created successfully!"
+            ? "Serviço atualizado com sucesso!"
+            : "Serviço criado com sucesso!"
         );
         setTitle("");
         setDescription("");
@@ -74,11 +74,15 @@ export default function ServiceForm({
         onSubmit?.();
       } else {
         const data = await response.json();
-        toast.error(data.message || "Something went wrong. Please try again.");
+        toast.error(
+          data.message || "Algo deu errado. Por favor, tente novamente."
+        );
       }
     } catch (err: unknown) {
       const error = err as Error;
-      toast.error(error.message || "An error occurred. Please try again.");
+      toast.error(
+        error.message || "Ocorreu um erro. Por favor, tente novamente."
+      );
     }
   }
 

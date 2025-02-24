@@ -45,18 +45,16 @@ export default function ServiceList() {
       });
 
       if (response.ok) {
-        toast.success("Service deleted successfully!");
+        toast.success("Serviço excluido com sucesso!");
         fetchServices();
         setDeleteDialog({ isOpen: false, serviceId: null });
       } else {
         const data = await response.json();
-        toast.error(data.message || "Failed to delete service.");
+        toast.error(data.message || "Falha ao excluir o serviço.");
       }
     } catch (err: unknown) {
       const error = err as Error;
-      toast.error(
-        error.message || "An error occurred while deleting the service."
-      );
+      toast.error(error.message || "Ocorreu um erro ao excluir o serviço.");
     }
   }
 
@@ -101,7 +99,7 @@ export default function ServiceList() {
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-lg font-semibold">{service.title}</h3>
                 <span className="text-sm text-gray-500">
-                  Order: {service.order}
+                  Ordem: {service.order}
                 </span>
               </div>
 

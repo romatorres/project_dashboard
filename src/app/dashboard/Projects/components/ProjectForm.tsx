@@ -8,8 +8,8 @@ type Project = {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
-  link: string;
+  imageUrl: string | null;
+  link: string | null;
   order: number;
   isActive: boolean;
 };
@@ -35,8 +35,7 @@ export default function ProjectForm({
     if (project) {
       setTitle(project.title);
       setDescription(project.description);
-      setImageUrl(project.imageUrl);
-      setLink(project.link);
+      setLink(project.link || "");
       setOrder(project.order);
     }
   }, [project]);
@@ -45,7 +44,7 @@ export default function ProjectForm({
     e.preventDefault();
 
     try {
-      const url = project ? `api/projects/${project.id}` : "/api/project";
+      const url = project ? `api/projects/${project.id}` : "/api/projects";
       const method = project ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -70,7 +69,6 @@ export default function ProjectForm({
         );
         setTitle("");
         setDescription("");
-        setImageUrl("");
         setLink("");
         setOrder(0);
         onSubmit?.();
@@ -87,6 +85,7 @@ export default function ProjectForm({
       );
     }
   }
+
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
       <div className="space-y-4">
@@ -140,6 +139,19 @@ export default function ProjectForm({
               </div>
             </div>
           )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Url do Projeto
+          </label>
+          <input
+            type="text"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            required
+          />
         </div>
 
         <div>

@@ -20,7 +20,6 @@ export async function PUT(
         isActive: data.isActive,
       },
     });
-
     return NextResponse.json(service);
   } catch {
     return NextResponse.json(
