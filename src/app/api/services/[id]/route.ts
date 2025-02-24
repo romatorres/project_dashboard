@@ -24,7 +24,7 @@ export async function PUT(
     return NextResponse.json(service);
   } catch {
     return NextResponse.json(
-      { message: "Error updating service" },
+      { message: "Erro ao atualizar o serviço" },
       { status: 500 }
     );
   }
@@ -44,7 +44,7 @@ export async function DELETE(
     return NextResponse.json(service);
   } catch {
     return NextResponse.json(
-      { message: "Error deleting service" },
+      { message: "Erro ao deletar o serviço" },
       { status: 500 }
     );
   }

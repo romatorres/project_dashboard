@@ -87,7 +87,7 @@ export default function ServiceForm({
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Title
+            Título
           </label>
           <input
             type="text"
@@ -100,7 +100,7 @@ export default function ServiceForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Description
+            Descrição
           </label>
           <textarea
             value={description}
@@ -113,7 +113,7 @@ export default function ServiceForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Icon
+            Icone
           </label>
           <input
             type="text"
@@ -126,7 +126,7 @@ export default function ServiceForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Image URL
+            Imagem URL
           </label>
           <input
             type="text"
@@ -152,7 +152,7 @@ export default function ServiceForm({
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Order
+            Ordem
           </label>
           <input
             type="number"
@@ -168,7 +168,7 @@ export default function ServiceForm({
             type="submit"
             className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            {service ? "Update Service" : "Add Service"}
+            {service ? "Atualizar o Serviço" : "Adicionar Serviço"}
           </button>
 
           {onCancel && (
@@ -177,7 +177,7 @@ export default function ServiceForm({
               onClick={onCancel}
               className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
-              Cancel
+              Cancelar
             </button>
           )}
         </div>
