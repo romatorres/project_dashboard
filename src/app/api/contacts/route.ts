@@ -1,21 +1,41 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { contactSchema } from "@/lib/schemas/contacts.schema";
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function GET() {
-  const contacts = await prisma.contact.findMany({
-    orderBy: { id: "asc" },
-  });
-  return NextResponse.json({ contacts });
+  try {
+    const contacts = await prisma.contact.findMany();
+
+    return NextResponse.json({ contacts });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
-export async function POST(request: NextResponse) {
-  const data = await request.json();
-  const contacts = await prisma.contact.create({
-    data: {
-      name: data.title,
-      message: data.message,
-      email: data.email,
-    },
-  });
-  return NextResponse.json({ contacts });
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    const { name, email, message } = contactSchema.parse(body);
+
+    await prisma.contact.create({
+      data: {
+        name,
+        email,
+        message,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Contato criado com sucesso!",
+    });
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors }, { status: 400 });
+    }
+
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

@@ -1,24 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { serviceSchema } from "@/lib/schemas/services.schema";
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function GET() {
-  const services = await prisma.service.findMany({
-    orderBy: { order: "asc" },
-  });
-  return NextResponse.json(services);
+  try {
+    const services = await prisma.service.findMany();
+
+    return NextResponse.json({ services });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
-export async function POST(request: NextResponse) {
-  const data = await request.json();
-  const service = await prisma.service.create({
-    data: {
-      title: data.title,
-      description: data.description,
-      icon: data.icon,
-      imageUrl: data.imageUrl,
-      order: data.order,
-      isActive: true,
-    },
-  });
-  return NextResponse.json(service);
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    const { title, description, imageUrl, icon, order, isActive } =
+      serviceSchema.parse(body);
+
+    await prisma.service.create({
+      data: {
+        title,
+        description,
+        imageUrl,
+        icon,
+        order,
+        isActive,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Serviço criado com sucesso!",
+    });
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors }, { status: 400 });
+    }
+
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

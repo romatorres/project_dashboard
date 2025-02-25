@@ -51,3 +51,19 @@ export async function PUT(request: NextRequest, { params }: Params) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(_: NextRequest, { params }: Params) {
+  try {
+    const { id } = await params;
+
+    await prisma.project.delete({
+      where: {
+        id,
+      },
+    });
+
+    return NextResponse.json({ message: "Projeto excluido com sucesso!" });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
