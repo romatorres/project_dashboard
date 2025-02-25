@@ -11,19 +11,13 @@ export async function PUT(
 
     const project = await prisma.project.update({
       where: { id },
-      data: {
-        title: data.title,
-        description: data.description,
-        imageUrl: data.imageUrl,
-        order: data.order,
-        link: data.link,
-        isActive: data.isActive,
-      },
+      data,
     });
-    return NextResponse.json(project);
-  } catch {
+    return NextResponse.json(project, {status: 200});
+  } catch (error) {
+    console.error('Erro ao atualizar o projeto:', error);
     return NextResponse.json(
-      { message: "Erro ao atualizar o projeto" },
+      { error: 'Falha ao atualizar o projeto' },
       { status: 500 }
     );
   }
