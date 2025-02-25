@@ -1,43 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { projectSchema } from "@/lib/schemas/projects.schema";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+interface Params {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(_: any, { params }: Params) {
   try {
-    const id = params.id;
-    const data = await request.json();
+    const { id } = await params;
 
-    const project = await prisma.project.update({
-      where: { id },
-      data,
+    const project = await prisma.project.findFirst({
+      where: {
+        id,
+      },
     });
-    return NextResponse.json(project, {status: 200});
-  } catch (error) {
-    console.error('Erro ao atualizar o projeto:', error);
-    return NextResponse.json(
-      { error: 'Falha ao atualizar o projeto' },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ project });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
-    const id = await params.id;
+    const { id } = await params;
 
-    const project = await prisma.project.delete({
-      where: { id },
+    const body = await request.json();
+
+    const { title, description, imageUrl, link, order, isActive } =
+      projectSchema.parse(body);
+
+    const project = await prisma.project.update({
+      data: {
+        title,
+        description,
+        imageUrl,
+        link,
+        order,
+        isActive,
+      },
+      where: {
+        id,
+      },
     });
-    return NextResponse.json(project);
-  } catch {
-    return NextResponse.json(
-      { message: "Erro ao deletar o projeto" },
-      { status: 500 }
-    );
+
+    return NextResponse.json({ project });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
