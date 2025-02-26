@@ -3,16 +3,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
-
-type Service = {
-  id: string;
-  title: string;
-  description: string;
-  icon: string | null;
-  imageUrl: string | null;
-  order: number;
-  isActive: boolean;
-};
+import { Service } from "../types";
 
 type ServiceFormProps = {
   service?: Service;
@@ -58,9 +49,11 @@ export default function ServiceForm({
           icon,
           imageUrl,
           order,
+          isActive: true, // Add this if it's required by your schema
         }),
       });
 
+      const data = await response.json();
       if (response.ok) {
         toast.success(
           service
@@ -70,22 +63,24 @@ export default function ServiceForm({
         setTitle("");
         setDescription("");
         setIcon("");
+        setImageUrl("");
         setOrder(0);
         onSubmit?.();
       } else {
-        const data = await response.json();
-        toast.error(
-          data.message || "Algo deu errado. Por favor, tente novamente."
-        );
+        // Handle the error message properly
+        const errorMessage =
+          typeof data.error === "string"
+            ? data.error
+            : "Algo deu errado. Por favor, tente novamente.";
+        toast.error(errorMessage);
       }
-    } catch (err: unknown) {
+    } catch (err) {
       const error = err as Error;
       toast.error(
         error.message || "Ocorreu um erro. Por favor, tente novamente."
       );
     }
   }
-
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
       <div className="space-y-4">

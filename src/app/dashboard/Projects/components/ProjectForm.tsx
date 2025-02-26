@@ -61,6 +61,7 @@ export default function ProjectForm({
           isActive: true, // Add this as it's required by the schema
         }),
       });
+
       const data = await response.json();
       if (response.ok) {
         toast.success(
@@ -75,8 +76,10 @@ export default function ProjectForm({
         setOrder(0);
         onSubmit?.();
       } else {
-        // Handle Zod validation errors or other API errors
-        const errorMessage = data.error?.message || data.error || "Algo deu errado. Por favor, tente novamente.";
+        const errorMessage =
+          data.error?.message ||
+          data.error ||
+          "Algo deu errado. Por favor, tente novamente.";
         toast.error(errorMessage);
       }
     } catch (err) {

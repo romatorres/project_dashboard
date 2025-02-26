@@ -37,7 +37,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors }, { status: 400 });
+      // Format validation errors into a more readable format
+      const errors = error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
+      return NextResponse.json({ error: errors }, { status: 400 });
     }
 
     return NextResponse.json({ error: error.message }, { status: 500 });

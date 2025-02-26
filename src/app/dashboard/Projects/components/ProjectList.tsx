@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import ProjectForm from "./ProjectForm";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import ProjectForm from "./ProjectForm";
 
 type Project = {
   id: string;
@@ -36,16 +36,14 @@ export default function ProjectList() {
     try {
       const response = await fetch("/api/projects");
       const data = await response.json();
-      // The API returns { projects } object, so we need to access the projects array
       setProjects(data.projects || []);
     } catch {
-      toast.error("Failed to fetch projects");
+      toast.error("Falha ao buscar os projetos");
     }
   }
 
   async function handleDelete(id: string) {
     try {
-      // Fix the API endpoint from services to projects
       const response = await fetch(`/api/projects/${id}`, {
         method: "DELETE",
       });

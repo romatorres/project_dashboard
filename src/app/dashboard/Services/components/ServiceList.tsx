@@ -6,16 +6,7 @@ import ServiceForm from "./ServiceForm";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-
-type Service = {
-  id: string;
-  title: string;
-  description: string;
-  icon: string | null;
-  imageUrl: string | null;
-  order: number;
-  isActive: boolean;
-};
+import { Service } from "../types";
 
 export default function ServiceList() {
   const [services, setServices] = useState<Service[]>([]);
@@ -33,9 +24,13 @@ export default function ServiceList() {
   }, []);
 
   async function fetchServices() {
-    const response = await fetch("/api/services");
-    const data = await response.json();
-    setServices(data);
+    try {
+      const response = await fetch("/api/services");
+      const data = await response.json();
+      setServices(data.services || []);
+    } catch {
+      toast.error("Falha ao buscar os serviços");
+    }
   }
 
   async function handleDelete(id: string) {

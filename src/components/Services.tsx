@@ -3,16 +3,7 @@
 import { useEffect, useState } from "react";
 import { Settings } from "lucide-react";
 import Image from "next/image";
-
-type Service = {
-  id: string;
-  title: string;
-  description: string;
-  icon: string | null;
-  imageUrl: string | null;
-  order: number;
-  isActive: boolean;
-};
+import { Service } from "@/app/dashboard/Services/types";
 
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
@@ -21,7 +12,7 @@ export default function Services() {
     async function fetchServices() {
       const response = await fetch("/api/services");
       const data = await response.json();
-      setServices(data.filter((service: Service) => service.isActive));
+      setServices(data.services || []);
     }
 
     fetchServices();
