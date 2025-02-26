@@ -33,14 +33,20 @@ export default function ProjectList() {
   }, []);
 
   async function fetchProjects() {
-    const response = await fetch("/api/projects");
-    const data = await response.json();
-    setProjects(data);
+    try {
+      const response = await fetch("/api/projects");
+      const data = await response.json();
+      // The API returns { projects } object, so we need to access the projects array
+      setProjects(data.projects || []);
+    } catch {
+      toast.error("Failed to fetch projects");
+    }
   }
 
   async function handleDelete(id: string) {
     try {
-      const response = await fetch(`/api/services/${id}`, {
+      // Fix the API endpoint from services to projects
+      const response = await fetch(`/api/projects/${id}`, {
         method: "DELETE",
       });
 
@@ -50,7 +56,7 @@ export default function ProjectList() {
         setDeleteDialog({ isOpen: false, projectId: null });
       } else {
         const data = await response.json();
-        toast.error(data.message || "Falha ao excluir o projeto.");
+        toast.error(data.error || "Falha ao excluir o projeto.");
       }
     } catch (err: unknown) {
       const error = err as Error;

@@ -58,9 +58,10 @@ export default function ProjectForm({
           imageUrl,
           link,
           order,
+          isActive: true, // Add this as it's required by the schema
         }),
       });
-
+      const data = await response.json();
       if (response.ok) {
         toast.success(
           project
@@ -69,14 +70,14 @@ export default function ProjectForm({
         );
         setTitle("");
         setDescription("");
+        setImageUrl("");
         setLink("");
         setOrder(0);
         onSubmit?.();
       } else {
-        const data = await response.json();
-        toast.error(
-          data.message || "Algo deu errado. Por favor, tente novamente."
-        );
+        // Handle Zod validation errors or other API errors
+        const errorMessage = data.error?.message || data.error || "Algo deu errado. Por favor, tente novamente.";
+        toast.error(errorMessage);
       }
     } catch (err) {
       const error = err as Error;
