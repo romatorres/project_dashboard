@@ -9,17 +9,27 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <Header />
+      <section id="hero">
+        <Header />
+      </section>
 
       <Hero />
 
-      <About />
+      <section id="about">
+        <About />
+      </section>
 
-      <Services />
+      <section id="services">
+        <Services />
+      </section>
 
-      <Projects />
+      <section id="projects">
+        <Projects />
+      </section>
 
-      <Contacts />
+      <section id="contacts">
+        <Contacts />
+      </section>
 
       <Footer />
     </>
